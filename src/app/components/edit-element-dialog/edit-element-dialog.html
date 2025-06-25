@@ -1,0 +1,49 @@
+<h2 mat-dialog-title>Edit Element</h2>
+<mat-dialog-content>
+  <div
+    class="grid md:grid-cols-4 md:grid-rows-1 grid-cols-1 grid-rows-4 gap-y-0 gap-x-4"
+  >
+    <mat-form-field>
+      <mat-label>Number</mat-label>
+      <input
+        matInput
+        type="number"
+        name="position"
+        [(ngModel)]="position"
+        (keyup.enter)="saveElement()"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input
+        matInput
+        name="name"
+        [(ngModel)]="name"
+        (keyup.enter)="saveElement()"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Weight</mat-label>
+      <input
+        matInput
+        type="number"
+        name="weight"
+        [(ngModel)]="weight"
+        (keyup.enter)="saveElement()"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Symbol</mat-label>
+      <input
+        matInput
+        name="symbol"
+        [(ngModel)]="symbol"
+        (keyup.enter)="saveElement()"
+      />
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button matButton matDialogClose>Cancel</button>
+  <button matButton (click)="saveElement()">Save</button>
+</mat-dialog-actions>

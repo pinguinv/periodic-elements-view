@@ -1,5 +1,12 @@
-import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import {
+  patchState,
+  signalStore,
+  withComputed,
+  withMethods,
+  withState,
+} from '@ngrx/signals';
 import { PeriodicElement } from '../types/periodic-element.type';
+import { computed } from '@angular/core';
 
 type PeriodicElementsState = {
   periodicElements: PeriodicElement[];
@@ -22,17 +29,20 @@ const initialState: PeriodicElementsState = {
 
 export const PeriodicElementsStore = signalStore(
   withState(initialState),
+  withComputed((store) => ({
+    sortedElements: computed(() => {
+      return store.periodicElements().sort((a, b) => a.position - b.position);
+    }),
+  })),
   withMethods((store) => ({
-    updateElement(updatedElement: PeriodicElement) {
+    updateElementByIndex(index: number, updatedElement: PeriodicElement) {
       patchState(store, {
-        periodicElements: store
-          .periodicElements()
-          .map((element: PeriodicElement) => {
-            if (element.position === updatedElement.position) {
-              return updatedElement;
-            }
-            return element;
-          }),
+        periodicElements: store.periodicElements().map((element, elIndex) => {
+          if (elIndex === index) {
+            return updatedElement;
+          }
+          return element;
+        }),
       });
     },
   }))

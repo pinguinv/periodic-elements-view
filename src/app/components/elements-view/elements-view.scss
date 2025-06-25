@@ -1,0 +1,17 @@
+tr.mat-row {
+  /* Workaround a bug where relative/absolute positoned elements
+        are not contained within the actual table-row. */
+  transform: scale(1);
+}
+
+.ripple-overlay {
+  /* The overlay does not receive pointer-events. Users should still
+    be able to select text; click buttons in cells etc.*/
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  overflow: hidden;
+}
