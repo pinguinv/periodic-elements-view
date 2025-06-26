@@ -11,7 +11,7 @@ import { computed } from '@angular/core';
 import { PeriodicElement } from '../types/periodic-element.type';
 import { ElementsStoreState } from '../types/elements-store-state.type';
 
-import { getDataWithSomeDelay } from './mock-data.service';
+import { getElementsWithSomeDelay } from './mock-data.service';
 import { catchError } from 'rxjs';
 
 const initialState: ElementsStoreState = {
@@ -40,16 +40,15 @@ export const PeriodicElementsStore = signalStore(
   })),
   withHooks({
     onInit(store) {
-      getDataWithSomeDelay()
+      getElementsWithSomeDelay()
         .pipe(
           catchError((err) => {
             console.error(err);
             return [];
           })
         )
-        .subscribe((data: ElementsStoreState) => {
-          data.isLoadedData = true;
-          patchState(store, data);
+        .subscribe((data: PeriodicElement[]) => {
+          patchState(store, { periodicElements: data, isLoadedData: true });
         });
     },
   })

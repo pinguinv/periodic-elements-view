@@ -8,38 +8,26 @@
       <input
         matInput
         type="number"
-        name="position"
         [(ngModel)]="position"
         (keyup.enter)="saveElement()"
       />
     </mat-form-field>
     <mat-form-field>
       <mat-label>Name</mat-label>
-      <input
-        matInput
-        name="name"
-        [(ngModel)]="name"
-        (keyup.enter)="saveElement()"
-      />
+      <input matInput [(ngModel)]="name" (keyup.enter)="saveElement()" />
     </mat-form-field>
     <mat-form-field>
       <mat-label>Weight</mat-label>
       <input
         matInput
         type="number"
-        name="weight"
         [(ngModel)]="weight"
         (keyup.enter)="saveElement()"
       />
     </mat-form-field>
     <mat-form-field>
       <mat-label>Symbol</mat-label>
-      <input
-        matInput
-        name="symbol"
-        [(ngModel)]="symbol"
-        (keyup.enter)="saveElement()"
-      />
+      <input matInput [(ngModel)]="symbol" (keyup.enter)="saveElement()" />
     </mat-form-field>
   </div>
 </mat-dialog-content>
