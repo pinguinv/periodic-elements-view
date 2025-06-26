@@ -1,10 +1,12 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject, model } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatTableModule } from '@angular/material/table';
+import { FormsModule } from '@angular/forms';
 
+import { MatTableModule } from '@angular/material/table';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatRippleModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatInputModule } from '@angular/material/input';
 
 import { CdkCellOutlet } from '@angular/cdk/table';
 
@@ -17,6 +19,8 @@ import { PeriodicElement } from '../../types/periodic-element.type';
   imports: [
     CommonModule,
     CdkCellOutlet,
+    FormsModule,
+    MatInputModule,
     MatTableModule,
     MatRippleModule,
     MatProgressSpinnerModule,
@@ -30,6 +34,14 @@ export class PeriodicElementsView {
   readonly dialog = inject(MatDialog);
 
   protected displayedColumns: string[] = ['Number', 'Name', 'Weight', 'Symbol'];
+
+  filter = model<string>('');
+
+  constructor() {
+    effect(() => {
+      this.periodicElementStore.updateFilter(this.filter());
+    });
+  }
 
   openEditElementDialog(element: PeriodicElement, index: number) {
     const configData: MatDialogConfig = {

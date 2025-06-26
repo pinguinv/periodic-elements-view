@@ -1,8 +1,22 @@
 <main class="w-full flex flex-col items-center">
-  <h1 class="text-2xl">Periodic Elements View</h1>
+  <h1 class="text-2xl pt-4">Periodic Elements View</h1>
 
-  <div class="w-full pt-4 sm:max-w-[600px]">
-    <table mat-table [dataSource]="periodicElementStore.sortedElements()">
+  <div class="w-full flex justify-center pt-4 sm:max-w-[600px]">
+    <mat-form-field>
+      <mat-label>Filter</mat-label>
+      <input
+        matInput
+        [disabled]="!periodicElementStore.isLoadedData() || periodicElementStore.periodicElements().length === 0"
+        [(ngModel)]="filter"
+      />
+    </mat-form-field>
+  </div>
+
+  <div class="w-full sm:max-w-[600px]">
+    <table
+      mat-table
+      [dataSource]="periodicElementStore.filteredAndSortedElements()"
+    >
       <ng-container matColumnDef="Number">
         <th mat-header-cell *matHeaderCellDef>Number</th>
         <td mat-cell class="h-[52px]" *matCellDef="let element">
@@ -48,7 +62,7 @@
   <div class="pt-8">
     <mat-spinner diameter="60"></mat-spinner>
   </div>
-  } @else if (periodicElementStore.periodicElements().length === 0) {
+  } @else if (periodicElementStore.filteredAndSortedElements().length === 0) {
   <p class="pt-8">No data to display.</p>
   }
 </main>

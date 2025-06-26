@@ -7,25 +7,54 @@ import {
   withState,
 } from '@ngrx/signals';
 import { computed } from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+
+import { catchError, debounceTime, distinctUntilChanged } from 'rxjs';
 
 import { PeriodicElement } from '../types/periodic-element.type';
 import { ElementsStoreState } from '../types/elements-store-state.type';
 
 import { getElementsWithSomeDelay } from './mock-data.service';
-import { catchError } from 'rxjs';
 
 const initialState: ElementsStoreState = {
   periodicElements: [],
+  filterStr: '',
   isLoadedData: false,
 };
 
 export const PeriodicElementsStore = signalStore(
   withState(initialState),
-  withComputed((store) => ({
-    sortedElements: computed(() => {
-      return store.periodicElements().sort((a, b) => a.position - b.position);
-    }),
-  })),
+  withComputed((store) => {
+    // Made that way to avoid using Subscription
+    const debouncedFilter = toSignal(
+      toObservable(store.filterStr).pipe(
+        debounceTime(2000),
+        distinctUntilChanged()
+      ),
+      { initialValue: '' }
+    );
+
+    return {
+      debouncedFilter,
+      filteredAndSortedElements: computed(() => {
+        const sorted = store
+          .periodicElements()
+          .sort((a, b) => a.position - b.position);
+
+        if (debouncedFilter() === '') return sorted;
+
+        return sorted.filter((el) =>
+          ''
+            .concat(el.position.toString())
+            .concat(el.name)
+            .concat(el.weight.toString())
+            .concat(el.symbol)
+            .toLowerCase()
+            .includes(debouncedFilter().toLowerCase())
+        );
+      }),
+    };
+  }),
   withMethods((store) => ({
     updateElementByIndex(index: number, updatedElement: PeriodicElement) {
       patchState(store, {
@@ -35,6 +64,11 @@ export const PeriodicElementsStore = signalStore(
           }
           return element;
         }),
+      });
+    },
+    updateFilter(filterStr: string) {
+      patchState(store, {
+        filterStr: filterStr,
       });
     },
   })),
