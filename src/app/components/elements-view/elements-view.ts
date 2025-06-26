@@ -4,6 +4,7 @@ import { MatTableModule } from '@angular/material/table';
 
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatRippleModule } from '@angular/material/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { CdkCellOutlet } from '@angular/cdk/table';
 
@@ -13,7 +14,13 @@ import { PeriodicElement } from '../../types/periodic-element.type';
 
 @Component({
   selector: 'app-elements-view',
-  imports: [CommonModule, MatTableModule, MatRippleModule, CdkCellOutlet],
+  imports: [
+    CommonModule,
+    CdkCellOutlet,
+    MatTableModule,
+    MatRippleModule,
+    MatProgressSpinnerModule,
+  ],
   providers: [PeriodicElementsStore],
   templateUrl: './elements-view.html',
   styleUrl: './elements-view.scss',
@@ -24,10 +31,6 @@ export class PeriodicElementsView {
 
   protected displayedColumns: string[] = ['Number', 'Name', 'Weight', 'Symbol'];
 
-  constructor() {
-    console.log('hello elements view');
-  }
-
   openEditElementDialog(element: PeriodicElement, index: number) {
     const configData: MatDialogConfig = {
       data: element,
@@ -35,7 +38,6 @@ export class PeriodicElementsView {
 
     const dialogRef = this.dialog.open(EditElementDialog, configData);
 
-    // use index here to update store
     dialogRef.afterClosed().subscribe((updatedData) => {
       if (updatedData) {
         this.periodicElementStore.updateElementByIndex(index, updatedData);

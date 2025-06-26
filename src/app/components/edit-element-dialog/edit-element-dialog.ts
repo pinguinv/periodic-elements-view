@@ -45,6 +45,5 @@ export class EditElementDialog {
     };
 
     this.dialogRef.close(updatedElement);
-    console.log(updatedElement);
   }
 }

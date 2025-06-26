@@ -1,3 +1,4 @@
+@use '@angular/material' as mat;
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -10,4 +11,13 @@ body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
   background-color: var(--mat-sys-background);
+}
+
+:root {
+  @include mat.progress-spinner-overrides(
+    (
+      // Looks better than standard
+      active-indicator-color: var(--mat-sys-on-surface-variant)
+    )
+  );
 }

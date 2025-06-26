@@ -1,5 +1,5 @@
 <main class="w-full flex flex-col items-center">
-  <h1 class="text-3xl">Periodic Elements View</h1>
+  <h1 class="text-2xl">Periodic Elements View</h1>
 
   <div class="w-full pt-4 sm:max-w-[600px]">
     <table mat-table [dataSource]="periodicElementStore.sortedElements()">
@@ -27,7 +27,7 @@
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <!-- Code looks a little bit confusing but 
-       ripple works & table looks normal besides that -->
+      ripple works & table looks normal -->
       <tr
         #tableRow
         class="mat-row cursor-pointer hover:bg-slate-200"
@@ -43,4 +43,12 @@
       </tr>
     </table>
   </div>
+
+  @if (!periodicElementStore.isLoadedData()) {
+  <div class="pt-8">
+    <mat-spinner diameter="60"></mat-spinner>
+  </div>
+  } @else if (periodicElementStore.periodicElements().length === 0) {
+  <p class="pt-8">No data to display.</p>
+  }
 </main>
