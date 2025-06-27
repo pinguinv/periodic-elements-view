@@ -12,7 +12,7 @@
     </mat-form-field>
   </div>
 
-  <div class="w-full sm:max-w-[600px]">
+  <div class="w-full flex justify-center sm:max-w-[600px] overflow-x-auto">
     <table
       mat-table
       [dataSource]="periodicElementStore.filteredAndSortedElements()"
@@ -45,8 +45,8 @@
       <tr
         #tableRow
         class="mat-row cursor-pointer hover:bg-slate-200"
-        (click)="openEditElementDialog(element, i)"
-        *matRowDef="let element; columns: displayedColumns; let i = index;"
+        (click)="openEditElementDialog(element)"
+        *matRowDef="let element; columns: displayedColumns;"
       >
         <ng-container cdkCellOutlet></ng-container>
         <div

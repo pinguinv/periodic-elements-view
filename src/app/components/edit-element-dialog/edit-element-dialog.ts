@@ -11,7 +11,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
 import { PeriodicElement } from '../../types/periodic-element.type';
-import { PeriodicElementsStore } from '../../store/elements.store';
 
 @Component({
   selector: 'app-edit-element-dialog',
@@ -22,19 +21,18 @@ import { PeriodicElementsStore } from '../../store/elements.store';
     MatDialogModule,
     MatButtonModule,
   ],
-  providers: [PeriodicElementsStore],
   templateUrl: './edit-element-dialog.html',
   styleUrl: './edit-element-dialog.scss',
 })
 export class EditElementDialog {
   dialogRef = inject(MatDialogRef<EditElementDialog>);
   elementData: PeriodicElement = inject(MAT_DIALOG_DATA);
-  store = inject(PeriodicElementsStore);
 
   position = this.elementData.position;
   name = this.elementData.name;
   weight = this.elementData.weight;
   symbol = this.elementData.symbol;
+  id = this.elementData.id;
 
   saveElement() {
     const updatedElement: PeriodicElement = {
@@ -42,6 +40,7 @@ export class EditElementDialog {
       name: this.name,
       weight: this.weight,
       symbol: this.symbol,
+      id: this.id,
     };
 
     this.dialogRef.close(updatedElement);

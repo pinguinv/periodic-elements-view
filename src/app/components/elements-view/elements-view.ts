@@ -43,17 +43,19 @@ export class PeriodicElementsView {
     });
   }
 
-  openEditElementDialog(element: PeriodicElement, index: number) {
+  openEditElementDialog(element: PeriodicElement) {
     const configData: MatDialogConfig = {
       data: element,
     };
 
     const dialogRef = this.dialog.open(EditElementDialog, configData);
 
-    dialogRef.afterClosed().subscribe((updatedData) => {
+    const sub = dialogRef.afterClosed().subscribe((updatedData) => {
       if (updatedData) {
-        this.periodicElementStore.updateElementByIndex(index, updatedData);
+        this.periodicElementStore.updateElement(updatedData);
       }
+
+      sub.unsubscribe();
     });
   }
 }

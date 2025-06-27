@@ -56,10 +56,10 @@ export const PeriodicElementsStore = signalStore(
     };
   }),
   withMethods((store) => ({
-    updateElementByIndex(index: number, updatedElement: PeriodicElement) {
+    updateElement(updatedElement: PeriodicElement) {
       patchState(store, {
-        periodicElements: store.periodicElements().map((element, elIndex) => {
-          if (elIndex === index) {
+        periodicElements: store.periodicElements().map((element) => {
+          if (element.id === updatedElement.id) {
             return updatedElement;
           }
           return element;
@@ -74,7 +74,7 @@ export const PeriodicElementsStore = signalStore(
   })),
   withHooks({
     onInit(store) {
-      getElementsWithSomeDelay()
+      const sub = getElementsWithSomeDelay()
         .pipe(
           catchError((err) => {
             console.error(err);
@@ -82,7 +82,17 @@ export const PeriodicElementsStore = signalStore(
           })
         )
         .subscribe((data: PeriodicElement[]) => {
+          // Assign id's when data is here.
+          // Why?
+          // I don't know if im allowed to change initial data that I got
+          // (I assumed not)
+          // - and there is no id's and positions can not act as id
+          // because it must be able to be changed
+          for (let i = 0; i < data.length; i++) data[i].id = i;
+
           patchState(store, { periodicElements: data, isLoadedData: true });
+
+          sub.unsubscribe();
         });
     },
   })
